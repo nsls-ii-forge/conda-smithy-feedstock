@@ -1,0 +1,59 @@
+{% set version = "3.7.3" %}
+{% set name = "conda-smithy" %}
+{% set sha256 = "ebaa8d43cbc58867a4e26d61d8ee50955e4a1c42fc16905715cfcee9732d953e" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/conda-forge/{{ name }}/releases/download/v{{ version }}/{{ name }}-{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+  noarch: python
+  script:
+    - "{{ PYTHON }} -m pip install . --no-deps -vv"
+    - rm -f "${PREFIX}/bin/conda"           # [not win]
+    - del /f /q "%PREFIX%\\Scripts\\conda"  # [win]
+  entry_points:
+    - feedstocks = conda_smithy.feedstocks:main
+    - conda-smithy = conda_smithy.cli:main
+
+requirements:
+  host:
+    - python >=3.6
+    - pip
+  run:
+    - python >=3.6
+    - conda >=4.2
+    - conda-build >=3.18.3
+    - jinja2
+    - requests
+    - pycrypto
+    - git
+    - gitpython
+    - pygithub <2
+    - ruamel.yaml >=0.16
+    - toolz
+    - vsts-python-api
+    - conda-forge-pinning
+    - scrypt
+    - license-expression
+    - libarchive
+
+test:
+  imports:
+    - conda_smithy
+    - conda_smithy.ci_register
+    - conda_smithy.configure_feedstock
+  commands:
+    - conda smithy --help
+
+about:
+  home: https://github.com/conda-forge/conda-smithy
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE.txt
+  summary: The tool for managing conda-forge feedstocks
