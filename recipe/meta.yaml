@@ -29,19 +29,19 @@ requirements:
     - python >=3.6
     - conda >=4.2
     - conda-build >=3.18.3
-    - jinja2
-    - requests
-    - pycrypto
+    - conda-forge-pinning
     - git
     - gitpython
+    - jinja2
+    - libarchive
+    - license-expression
+    - pycrypto
     - pygithub <2
+    - requests
     - ruamel.yaml >=0.16
+    - scrypt
     - toolz
     - vsts-python-api
-    - conda-forge-pinning
-    - scrypt
-    - license-expression
-    - libarchive
 
 test:
   imports:
